@@ -90,24 +90,15 @@ def Mongo2SBS(mongoserver, mongoport, dbname, start, end):
   #Initialization of SBS
   detector = sbs.SBS()
 
-# TODO: Connect to database. 
-# The address of Mongo DB is 'localhost:27017'
-# The name of database is abnormal_energy
+
   client = MongoClient("mongodb://"+mongoserver+":"+str(mongoport))
   db = client[dbname]
   
-# TODO_END
+
   print("Initialize SBS state")
   filteredSensors = dict()
 
-# TODO: Read the names of sensor that you want to compare, store it to filteredSensors
-# This information stores in table 'streams'.
-# The format of filteredSensors is:
-#   {
-#     'sensor name 0':0,
-#     'sensor name 1':1,
-#     ...
-#   }
+
   streams = db.streams.find()
   i=0
   for sensor in streams:
@@ -128,13 +119,7 @@ def Mongo2SBS(mongoserver, mongoport, dbname, start, end):
     sys.stdout.flush()
     mongoData = []
 
-# TODO: Read the power value of selected (filtered?) sensors from curr_day to next_day in Mongo DB, store it to mongoData.
-# The format of mongoData is
-#   [
-#     ('sensor_id', 'timestamp', 'power'),
-#     ('sensor_id', 'timestamp', 'power'),
-#     ...
-#   ]
+
 # Power value of sensor stores in table 'sbs'
     for fs in filteredSensors:
       time_vals = db.sbs.find({'sensor_id':fs,'timestamp': { '$gt': curr_day, '$lt': next_day } } )
@@ -145,7 +130,7 @@ def Mongo2SBS(mongoserver, mongoport, dbname, start, end):
         power = float(str(line).split("'power': ")[1].split("}")[0])
         #print(sensor_id+"----"+timestamp+"----"+power)
         mongoData.append((sensor_id,timestamp,power))
-# TODO_END 
+
     alarms = detector.addSample(mongoData,tsdb=False)
 
     #Filter out the symmetric alarms
@@ -159,7 +144,7 @@ def Mongo2SBS(mongoserver, mongoport, dbname, start, end):
   sys.stdout.write("[{0}] 100%, SBS found {1} anomalies in total\n".format(datetime.datetime.now(),len(allAlarms)))
 
 
-# TODO: use pickle to store allAlarms in a file so that you can analyze it later.
+
   print("Alarms: ")
   for i in allAlarms:
     print(i) #print to log, for comparison with pickle file
