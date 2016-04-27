@@ -1,5 +1,5 @@
 # SBS
-Implementation of [String, Bind and Search].(http://www.eecs.berkeley.edu/~jortiz/papers/p129-fontugne.pdf)
+Implementation of [String, Bind and Search](http://www.eecs.berkeley.edu/~jortiz/papers/p129-fontugne.pdf).
 
 A Method for Identifying Abnormal Energy Consumption in Buildings. Uses Python to read MongoDB of building sensor data and applies SBS to identify abnormal sensors and incident timestamps.
 
